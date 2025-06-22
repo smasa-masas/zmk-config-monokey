@@ -20,7 +20,7 @@
 
         scroll {
             bindings = <&mo 5>;
-            key-positions = <18 17 16>;
+            key-positions = <27 28>;
         };
 
         LEFTCLICK {
@@ -91,10 +91,10 @@
 
         MOUSE {
             bindings = <
-&trans  &trans  &trans  &trans  &trans            &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans            &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans            &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans          &trans  &trans
+&trans  &trans  &trans  &trans  &trans            &trans  &trans  &trans    &trans    &trans
+&trans  &trans  &trans  &trans  &trans            &trans  &trans  &trans    &trans    &trans
+&trans  &trans  &trans  &trans  &trans            &trans  &trans  &mkp MB1  &mkp MB2  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans            &trans    &trans
             >;
         };
 
