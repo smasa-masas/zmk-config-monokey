@@ -84,7 +84,7 @@
 &kp F1   &kp F2   &kp F3   &kp F4   &kp F5             &kp KP_PLUS      &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp KP_MINUS
 &kp F6   &kp F7   &kp F8   &kp F9   &kp F10            &kp KP_MULTIPLY  &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &kp KP_SLASH
 &kp F11  &kp F12  &kp F13  &kp F14  &kp F15            &kp NUMBER_0     &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp DOT
-&trans   &trans   &trans   &trans   &trans   &trans    &kp MINUS        &kp PERIOD                  &kp LA(SEMI)  &kp KP_COMMA
+&trans   &trans   &trans   &trans   &trans   &trans    &trans           &trans                      &kp LA(SEMI)  &kp KP_COMMA
             >;
         };
 
