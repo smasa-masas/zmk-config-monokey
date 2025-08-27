@@ -23,16 +23,6 @@
             key-positions = <27 28>;
         };
 
-        LEFTCLICK {
-            bindings = <&mkp MB1>;
-            key-positions = <16 17>;
-        };
-
-        RIGHTCLICK {
-            bindings = <&mkp MB2>;
-            key-positions = <17 18>;
-        };
-
         tab {
             bindings = <&kp TAB>;
             key-positions = <10 11>;
