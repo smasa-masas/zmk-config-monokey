@@ -64,6 +64,7 @@
         zephyr,axis-y = <INPUT_REL_Y>;
         
         /* scroll-layers = <5>; /*
+
     };
 };
 
