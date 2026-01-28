@@ -62,7 +62,7 @@
         zephyr,axis-x = <INPUT_REL_X>;
         zephyr,axis-y = <INPUT_REL_Y>;
         
-        # scroll-layers = <5>;
+        /* scroll-layers = <5>; /*
     };
 };
 
