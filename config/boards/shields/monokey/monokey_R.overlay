@@ -1,3 +1,4 @@
+#include <zephyr/dt-bindings/input/input-event-codes.h> // ← これをファイルの1行目に追加
 #include "monokey.dtsi"
 
 &default_transform {
