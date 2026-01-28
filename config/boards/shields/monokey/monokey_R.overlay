@@ -64,22 +64,24 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* transform (1) で回転方向を合わせ、
-           scaler (-1) (-1) で上下左右すべての反転を補正します。
+        /* 今回の変更点: scaler 1 (-1) 
+           「-1 -1」で上下が直り左右が逆になったのであれば、
+           左右(1番目の数値)を反転させて 1 に戻し、
+           上下(2番目の数値)は直った時のまま -1 を維持します。
         */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-1) (-1)>;
+            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler 1 (-1)>;
         };
 
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-1) (-3)>;
+            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler 1 (-3)>;
         };
 
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-3) (-1)>;
+            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler 3 (-1)>;
         };
 
         scroll-mode {
