@@ -50,11 +50,8 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        
-        /* 90度回転の補正：XとYを入れ替え */
         zephyr,axis-x = <INPUT_REL_Y>;
         zephyr,axis-y = <INPUT_REL_X>;
-
         res-cpi = <800>;
     };
 };
@@ -66,7 +63,6 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* 軸入れ替え後の反転補正：Y軸（右側の数値）を -1 に設定 */
         default-layer {
             layers = <0>;
             input-processors = <&zip_xy_scaler 1 -1>;
