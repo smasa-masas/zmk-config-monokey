@@ -51,7 +51,7 @@
         spi-max-frequency = <2000000>;
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         
-        /* 【重要】ここで物理的な入力を直接スワップします */
+        /* 物理軸を入れ替えたまま固定 */
         zephyr,axis-x = <INPUT_REL_Y>;
         zephyr,axis-y = <INPUT_REL_X>;
         
@@ -66,23 +66,22 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* transformは使いません。
-           これまでの結果（(7)で左右はOK、上下が逆だった）に基づき、
-           入れ替えた軸に対して (-1) と (1) を適用します。
+        /* 左右は (-1) でOKだったのでそのまま。
+           上下は (1) で逆だったので (-1) に変更。
         */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_scaler (-1) 1>;
+            input-processors = <&zip_xy_scaler (-1) (-1)>;
         };
 
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_scaler (-1) 3>;
+            input-processors = <&zip_xy_scaler (-1) (-3)>;
         };
 
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_scaler (-3) 1>;
+            input-processors = <&zip_xy_scaler (-3) (-1)>;
         };
 
         scroll-mode {
