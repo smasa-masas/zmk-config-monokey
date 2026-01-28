@@ -1,4 +1,4 @@
-#include <zephyr/dt-bindings/input/input-event-codes.h> // ← これをファイルの1行目に追加
+#include <zephyr/dt-bindings/input/input-event-codes.h>
 #include "monokey.dtsi"
 
 &default_transform {
@@ -8,21 +8,13 @@
 &xiao_serial { status = "disabled"; };
 
 &kscan0 {
-        col-gpios
-            = <&xiao_d 10 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 9 GPIO_ACTIVE_HIGH> 
-            , <&xiao_d 8 GPIO_ACTIVE_HIGH> 
-            , <&xiao_d 7 GPIO_ACTIVE_HIGH> 
-            , <&gpio0 10 GPIO_ACTIVE_HIGH>
-            ;
-};
-
-/ {
-    trackball_listener {
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
-
-    };
+    col-gpios
+        = <&xiao_d 10 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 9 GPIO_ACTIVE_HIGH> 
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH> 
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> 
+        , <&gpio0 10 GPIO_ACTIVE_HIGH>
+        ;
 };
 
 &pinctrl {
@@ -57,31 +49,42 @@
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-       /* irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; */
+        /* 新しい公式定義の必須項目 */
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-
         zephyr,axis-x = <INPUT_REL_X>;
         zephyr,axis-y = <INPUT_REL_Y>;
-        
-        /* scroll-layers = <5>; */
 
+        /* 以前の.conf設定の再現 */
+        res-cpi = <800>;
+        smart-algorithm;
+        downshift-time-ms = <3260>;
     };
 };
 
 #include <input/processors.dtsi>
+
 / {
+    /* 以前の trackball_listener を統合して整理 */
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
+        /* CPI Low (Layer 2) */
         cpi-low {
             layers = <2>;
             input-processors = <&zip_xy_scaler 1 3>;
         };
 
+        /* CPI High (Layer 3) */
         cpi-high {
             layers = <3>;
             input-processors = <&zip_xy_scaler 3 1>;
+        };
+
+        /* Scroll Mode (Layer 5) : 旧 scroll-layers = <5> の再現 */
+        scroll-mode {
+            layers = <5>;
+            input-processors = <&zip_xy_to_scroll>;
         };
     };
 };
