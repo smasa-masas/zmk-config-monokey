@@ -51,7 +51,6 @@
         spi-max-frequency = <2000000>;
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         
-        /* 基本設定は変更しません */
         zephyr,axis-x = <INPUT_REL_X>;
         zephyr,axis-y = <INPUT_REL_Y>;
         res-cpi = <800>;
@@ -65,22 +64,22 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* 1. zip_xy_transform (1) でまず90度回転させます。
-           2. その後の zip_xy_scaler で「左右」と「上下」を個別に反転させます。
+        /* transform (1) で回転方向を合わせ、
+           scaler (-1) (-1) で上下左右すべての反転を補正します。
         */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-1) 1>;
+            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-1) (-1)>;
         };
 
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-1) 3>;
+            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-1) (-3)>;
         };
 
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-3) 1>;
+            input-processors = <&zip_xy_transform (1)>, <&zip_xy_scaler (-3) (-1)>;
         };
 
         scroll-mode {
