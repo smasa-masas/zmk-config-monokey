@@ -50,12 +50,11 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         
-        /* エラーを解消するための必須項目 */
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         
-        /* 軸設定を一旦標準に戻します */
-        zephyr,axis-x = <INPUT_REL_X>;
-        zephyr,axis-y = <INPUT_REL_Y>;
+        /* 軸を入れ替え、物理的な「上下」をXに、「左右」をYに割り当てます */
+        zephyr,axis-x = <INPUT_REL_Y>;
+        zephyr,axis-y = <INPUT_REL_X>;
         
         res-cpi = <800>;
     };
@@ -68,23 +67,23 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* 90度回転＋上下左右を正常化するためのプロセッサ 
-           &zip_xy_scaler の代わりに &zip_xy_transform を使用して
-           「90度回転(2)」を直接指定します。
+        /* 現在の挙動（上が右、下が左...）を完全に打ち消す設定です。
+           左側の数値（上下）を (-1) にして反転、
+           右側の数値（左右）を (-1) にして反転させます。
         */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_transform (2)>;
+            input-processors = <&zip_xy_scaler (-1) (-1)>;
         };
 
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_transform (2)>, <&zip_xy_scaler 1 3>;
+            input-processors = <&zip_xy_scaler (-1) (-3)>;
         };
 
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_transform (2)>, <&zip_xy_scaler 3 1>;
+            input-processors = <&zip_xy_scaler (-3) (-1)>;
         };
 
         scroll-mode {
