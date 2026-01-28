@@ -49,16 +49,17 @@
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
+        /* 必須項目 */
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         zephyr,axis-x = <INPUT_REL_X>;
         zephyr,axis-y = <INPUT_REL_Y>;
 
+        /* 以前の設定の再現（公式定義に存在する項目のみ） */
         res-cpi = <800>;
-        smart-algorithm;
-        downshift-time-ms = <3260>;
     };
 };
 
+/* 入力プロセッサの読み込み */
 #include <input/processors.dtsi>
 
 / {
@@ -81,7 +82,7 @@
         /* Scroll Mode (Layer 5) */
         scroll-mode {
             layers = <5>;
-            /* 最新のZMKでの標準名称に変更 */
+            /* ZMK標準のスクロール変換プロセッサを使用 */
             input-processors = <&zip_xy_to_scroll_mapper>;
         };
     };
