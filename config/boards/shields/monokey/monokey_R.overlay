@@ -37,9 +37,9 @@
         spi-max-frequency = <2000000>;
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        /* ★ 90°回転を補正するため軸を入れ替える */
-        zephyr,axis-x = <INPUT_REL_Y>;
-        zephyr,axis-y = <INPUT_REL_X>;
+        /* ✅ 回転補正をやめ、素直にX/Yへ */
+        zephyr,axis-x = <INPUT_REL_X>;
+        zephyr,axis-y = <INPUT_REL_Y>;
 
         res-cpi = <800>;
     };
@@ -52,23 +52,20 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /*
-         * ★ Xのみ反転
-         * これで (-y, x) → (x, y) になる
-         */
+        /* ✅ 反転も不要なら 1,1 に戻す（=そのまま） */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_scaler (-1) (1)>;
+            input-processors = <&zip_xy_scaler (1) (1)>;
         };
 
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_scaler (-1) (2)>;
+            input-processors = <&zip_xy_scaler (1) (2)>;
         };
 
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_scaler (-2) (2)>;
+            input-processors = <&zip_xy_scaler (2) (2)>;
         };
 
         scroll-mode {
