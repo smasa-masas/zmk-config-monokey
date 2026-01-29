@@ -51,7 +51,7 @@
         spi-max-frequency = <2000000>;
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        /* ★ 修正ポイント：軸を入れ替える */
+        /* 軸割り当てはこれで正解 */
         zephyr,axis-x = <INPUT_REL_Y>;
         zephyr,axis-y = <INPUT_REL_X>;
 
@@ -66,25 +66,22 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* 通常操作 */
+        /* ★ Y符号を反転解除 */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_scaler (1) (-1)>;
+            input-processors = <&zip_xy_scaler (1) (1)>;
         };
 
-        /* 低感度 */
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_scaler (1) (-2)>;
+            input-processors = <&zip_xy_scaler (1) (2)>;
         };
 
-        /* 高感度 */
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_scaler (2) (-2)>;
+            input-processors = <&zip_xy_scaler (2) (2)>;
         };
 
-        /* スクロール */
         scroll-mode {
             layers = <5>;
             input-processors = <&zip_xy_to_scroll_mapper>;
