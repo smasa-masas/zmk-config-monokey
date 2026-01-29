@@ -1,48 +1,8 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include "monokey.dtsi"
 
-&default_transform {
-    col-offset = <6>;
-};
-
-&xiao_serial { status = "disabled"; };
-
-&kscan0 {
-    col-gpios
-        = <&xiao_d 10 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 9 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 8 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH>
-        , <&gpio0 10 GPIO_ACTIVE_HIGH>
-        ;
-};
-
-&pinctrl {
-    spi0_default: spi0_default {
-        group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;
-        };
-    };
-
-    spi0_sleep: spi0_sleep {
-        group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;
-            low-power-enable;
-        };
-    };
-};
-
 &spi0 {
     status = "okay";
-    compatible = "nordic,nrf-spim";
-    pinctrl-0 = <&spi0_default>;
-    pinctrl-1 = <&spi0_sleep>;
-    pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
 
     trackball: trackball@0 {
         status = "okay";
@@ -51,9 +11,18 @@
         spi-max-frequency = <2000000>;
         motion-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        /* 軸割り当てはこのままでOK */
-        zephyr,axis-x = <INPUT_REL_Y>;
-        zephyr,axis-y = <INPUT_REL_X>;
+        /*
+         * ★ ここが最重要 ★
+         * PMW3610 が 90° 回転実装されている前提
+         *
+         * 物理上 → 上 : カーソル上
+         * 物理右 → カーソル右
+         */
+        zephyr,axis-x = <INPUT_REL_X>;
+        zephyr,axis-y = <INPUT_REL_Y>;
+
+        /* 上下だけが逆だったため、ここでYを反転 */
+        zephyr,invert-y;
 
         res-cpi = <800>;
     };
@@ -66,20 +35,20 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        /* ★ X符号のみ反転 */
+        /* 感度調整のみ（符号反転はしない） */
         default-layer {
             layers = <0>;
-            input-processors = <&zip_xy_scaler (-1) (1)>;
+            input-processors = <&zip_xy_scaler (1) (1)>;
         };
 
         cpi-low {
             layers = <2>;
-            input-processors = <&zip_xy_scaler (-1) (2)>;
+            input-processors = <&zip_xy_scaler (1) (2)>;
         };
 
         cpi-high {
             layers = <3>;
-            input-processors = <&zip_xy_scaler (-2) (2)>;
+            input-processors = <&zip_xy_scaler (2) (2)>;
         };
 
         scroll-mode {
